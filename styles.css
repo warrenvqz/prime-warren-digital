@@ -154,11 +154,15 @@ body::before {
     transition: background .2s;
   }
   .pv-nav-burger:hover { background: rgba(255,255,255,.12); }
-  .pv-nav-burger span, .pv-nav-burger span::before, .pv-nav-burger span::after {
-    content: ""; position: absolute; width: 18px; height: 2px; background: #fff; border-radius: 2px;
-    transition: transform .25s var(--pv-ease), top .25s var(--pv-ease), opacity .2s;
+  .pv-nav-burger span {
+    position: relative; display: block; width: 18px; height: 2px;
+    background: #fff; border-radius: 2px; transition: background .15s var(--pv-ease);
   }
-  .pv-nav-burger span { position: relative; }
+  .pv-nav-burger span::before, .pv-nav-burger span::after {
+    content: ""; position: absolute; left: 0; width: 18px; height: 2px;
+    background: #fff; border-radius: 2px;
+    transition: transform .25s var(--pv-ease), top .25s var(--pv-ease);
+  }
   .pv-nav-burger span::before { top: -6px; } .pv-nav-burger span::after { top: 6px; }
   .pv-nav.nav-open .pv-nav-burger span { background: transparent; }
   .pv-nav.nav-open .pv-nav-burger span::before { top: 0; transform: rotate(45deg); }
@@ -335,7 +339,13 @@ body::before {
 .pv-row-scroll {
   display: grid; grid-auto-flow: column; grid-auto-columns: 348px;
   gap: 20px; overflow-x: auto; scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain;
   padding: 6px 4px 20px; scrollbar-width: thin; scrollbar-color: var(--pv-surface-3) transparent;
+}
+/* free, momentum scrolling on touch — snap + hover-transitions make it feel jumpy */
+@media (hover: none){
+  .pv-row-scroll { scroll-snap-type: none; }
+  .pv-row-scroll .pv-card { scroll-snap-align: none; transition: none; }
 }
 .pv-row-scroll::-webkit-scrollbar { height: 8px; }
 .pv-row-scroll::-webkit-scrollbar-thumb { background: var(--pv-surface-3); border-radius: 8px; }
