@@ -515,9 +515,11 @@ body::before {
 @media (max-width: 720px){ .pv-ep { grid-template-columns: 40px 1fr; } .pv-ep .runtime { display: none; } }
 
 /* =====================  STAT STRIP  ===================== */
-.pv-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-@media (max-width: 860px){ .pv-stats { grid-template-columns: repeat(2, 1fr); } }
-.pv-stat { background: var(--pv-surface); border: 1px solid var(--pv-line); border-radius: var(--pv-radius-lg); padding: 22px; }
+.pv-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px){ .pv-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 560px){ .pv-stats { grid-template-columns: 1fr; } .pv-stat .v { font-size: 30px; } }
+.pv-stat { background: var(--pv-surface); border: 1px solid var(--pv-line); border-radius: var(--pv-radius-lg); padding: 22px; min-width: 0; }
+.pv-stat .v { overflow-wrap: anywhere; }
 .pv-stat .v { font-size: 34px; font-weight: 800; letter-spacing: -.02em; color: #fff; line-height: 1; }
 .pv-stat .v .accent { color: var(--pv-blue); }
 .pv-stat .l { font-size: 13px; color: var(--pv-text-2); margin-top: 10px; line-height: 1.45; }
@@ -667,6 +669,15 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible,
   .pv-scrubber-seg::after { display: none; }
   /* align the first card's left edge to the page gutter */
   .pv-row-scroll { padding-left: 0; padding-right: 0; }
+  /* stack the row header so title / sub / scroll-cue don't crowd */
+  .pv-row-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .pv-row-head > div { width: 100%; }
+  .pv-row-title { font-size: 20px; }
+  .pv-row-sub { order: 3; }
+  .pv-row-scrollcue { order: 2; margin-top: 2px; }
+  /* center the PROPEL spotlight buttons on mobile */
+  .pv-spotlight .pv-xray-cta { justify-content: center; }
+  .pv-spotlight .pv-xray-cta .pv-btn { flex: 1; justify-content: center; min-width: 0; }
   /* inline-padded CTA/stat cards must respect the mobile gutter */
   .pv-detail-hero { padding-left: 22px !important; padding-right: 22px !important; }
   .pv-section > .pv-wrap > .pv-stat[style] { padding-left: 22px !important; padding-right: 22px !important; }
@@ -683,9 +694,11 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible,
   .pv-modal-close { width: 40px; height: 40px; }
   .pv-modal-hero { padding-top: 46px; }
 }
-/* show the play-disc affordance on touch devices (no hover) */
+/* On touch, keep a SUBTLE play cue (small, not covering the art/badges) rather
+   than the big hover disc. The whole card is tappable + the row sub says so. */
 @media (hover: none){
-  .pv-card .pv-playhint { opacity: .9; }
+  .pv-card .pv-playhint { opacity: 1; align-items: flex-end; justify-content: flex-end; padding: 12px; }
+  .pv-card .pv-playhint .disc { width: 34px; height: 34px; font-size: 13px; background: rgba(0,168,225,.85); }
 }
 /* tighten the nav bar so it never overflows very narrow phones */
 @media (max-width: 400px){
