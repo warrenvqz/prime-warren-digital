@@ -201,9 +201,37 @@
     });
   }
 
+  /* ---- Mobile nav: inject a hamburger that toggles the links panel ---- */
+  function initMobileNav() {
+    var nav = document.querySelector(".pv-nav");
+    var inner = nav && nav.querySelector(".pv-nav-inner");
+    var links = nav && nav.querySelector(".pv-navlinks");
+    if (!nav || !inner || !links) return;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pv-nav-burger";
+    btn.setAttribute("aria-label", "Menu");
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML = '<span aria-hidden="true"></span>';
+    inner.appendChild(btn);
+    function setOpen(open) {
+      nav.classList.toggle("nav-open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setOpen(!nav.classList.contains("nav-open"));
+    });
+    links.querySelectorAll("a").forEach(function (a) {
+      a.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+    document.addEventListener("click", function (e) { if (!nav.contains(e.target)) setOpen(false); });
+  }
+
   function ready(fn) {
     if (document.readyState !== "loading") fn();
     else document.addEventListener("DOMContentLoaded", fn);
   }
-  ready(function () { initReveal(); initNav(); initRows(); initXray(); initModals(); initTabs(); initYear(); });
+  ready(function () { initReveal(); initNav(); initRows(); initXray(); initModals(); initTabs(); initMobileNav(); initYear(); });
 })();

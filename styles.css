@@ -79,7 +79,10 @@ body::before {
 /* =====================  LAYOUT  ===================== */
 .pv-wrap { max-width: var(--pv-maxw); margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
 .pv-section { padding: 46px 0; position: relative; z-index: 1; }
-@media (max-width: 720px){ .pv-wrap { padding: 0 18px; } }
+@media (max-width: 720px){
+  .pv-wrap { padding: 0 22px; }
+  .pv-section { padding: 32px 0; }
+}
 
 /* =====================  TOP NAV  ===================== */
 .pv-nav {
@@ -92,7 +95,7 @@ body::before {
   display: flex; align-items: center; gap: 26px;
   padding: 14px 40px;
 }
-@media (max-width: 720px){ .pv-nav-inner { padding: 12px 18px; gap: 16px; } }
+@media (max-width: 720px){ .pv-nav-inner { padding: 12px 22px; gap: 12px; } }
 
 /* Wordmark mirrors the real Prime Video lockup: lowercase, the lead word in
    Prime-blue, the second in white, with the Amazon "smile" arrow underlining it. */
@@ -126,7 +129,47 @@ body::before {
   white-space: nowrap;
 }
 .pv-nav-cta:hover { background: var(--pv-blue-hi); transform: translateY(-1px); }
-@media (max-width: 860px){ .pv-navlinks { display: none; } }
+
+/* ---- Mobile nav: hamburger + slide-down panel (injected by app.js) ---- */
+.pv-nav-burger { display: none; }
+@media (max-width: 860px){
+  .pv-nav-inner { gap: 12px; }
+  .pv-navlinks {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 59;
+    flex-direction: column; align-items: stretch; gap: 0; margin: 0;
+    background: var(--pv-surface-2); border-top: 1px solid var(--pv-line);
+    box-shadow: 0 18px 40px rgba(0,0,0,.5);
+    padding: 4px 22px; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
+    transition: max-height .3s var(--pv-ease), opacity .2s var(--pv-ease), padding .3s var(--pv-ease);
+  }
+  .pv-nav.nav-open .pv-navlinks { max-height: 70vh; opacity: 1; pointer-events: auto; padding: 4px 22px 12px; }
+  .pv-navlinks a { padding: 14px 2px; font-size: 16px; color: var(--pv-text); border-bottom: 1px solid var(--pv-line); }
+  .pv-navlinks a:last-child { border-bottom: 0; }
+  .pv-navlinks a[aria-current="page"] { color: var(--pv-blue); }
+  .pv-navlinks a[aria-current="page"]::after { display: none; }
+  .pv-nav-burger {
+    display: inline-flex; align-items: center; justify-content: center; flex: none;
+    width: 42px; height: 42px; border: 1px solid var(--pv-line); border-radius: 9px;
+    background: rgba(255,255,255,.06); cursor: pointer; padding: 0; margin-left: 2px;
+    transition: background .2s;
+  }
+  .pv-nav-burger:hover { background: rgba(255,255,255,.12); }
+  .pv-nav-burger span, .pv-nav-burger span::before, .pv-nav-burger span::after {
+    content: ""; position: absolute; width: 18px; height: 2px; background: #fff; border-radius: 2px;
+    transition: transform .25s var(--pv-ease), top .25s var(--pv-ease), opacity .2s;
+  }
+  .pv-nav-burger span { position: relative; }
+  .pv-nav-burger span::before { top: -6px; } .pv-nav-burger span::after { top: 6px; }
+  .pv-nav.nav-open .pv-nav-burger span { background: transparent; }
+  .pv-nav.nav-open .pv-nav-burger span::before { top: 0; transform: rotate(45deg); }
+  .pv-nav.nav-open .pv-nav-burger span::after { top: 0; transform: rotate(-45deg); }
+  .pv-logo .pv-prime, .pv-logo .pv-badge { font-size: 19px; }
+  .pv-nav-cta { padding: 8px 14px; font-size: 13px; }
+}
+@media (max-width: 400px){
+  .pv-nav-cta { padding: 8px 12px; font-size: 12.5px; }
+  .pv-logo .pv-prime, .pv-logo .pv-badge { font-size: 18px; }
+}
 
 /* =====================  BADGES / PILLS  ===================== */
 .pv-prime-tag {
@@ -210,7 +253,15 @@ body::before {
 .pv-hero .pv-tagline { font-size: clamp(18px, 2.1vw, 25px); color: #dfe7ee; font-weight: 600; margin: 12px 0 0; max-width: 30ch; }
 .pv-hero .pv-synopsis { font-size: 16.5px; color: var(--pv-text-2); max-width: 62ch; margin: 20px 0 0; line-height: 1.6; }
 .pv-hero-actions { display: flex; align-items: center; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
-@media (max-width: 720px){ .pv-hero { min-height: 76vh; } .pv-hero-inner, .pv-hero-bg::after { } .pv-hero-inner { padding: 0 18px 40px; } }
+@media (max-width: 720px){
+  .pv-hero { min-height: 82vh; }
+  .pv-hero-inner { padding: 84px 22px 40px; }
+  .pv-hero h1 { font-size: clamp(34px, 11vw, 52px); }
+  .pv-hero .pv-tagline { font-size: 19px; }
+  .pv-hero .pv-synopsis { font-size: 15.5px; }
+  .pv-hero-actions { gap: 10px; }
+  .pv-hero-actions .pv-btn { flex: 1; justify-content: center; }
+}
 
 /* =====================  HERO PORTRAIT (Netflix-style, half-hidden right)  ===================== */
 .pv-hero-portrait {
@@ -481,7 +532,7 @@ body::before {
 /* =====================  FOOTER  ===================== */
 .pv-footer { border-top: 1px solid var(--pv-line); background: var(--pv-bg-2); margin-top: 40px; }
 .pv-footer-inner { max-width: var(--pv-maxw); margin: 0 auto; padding: 48px 40px; display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 30px; }
-@media (max-width: 720px){ .pv-footer-inner { grid-template-columns: 1fr; padding: 34px 18px; } }
+@media (max-width: 720px){ .pv-footer-inner { grid-template-columns: 1fr; padding: 32px 22px; gap: 22px; } }
 .pv-footer h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--pv-text-3); margin: 0 0 14px; }
 .pv-footer a { color: var(--pv-text-2); font-size: 14px; display: block; padding: 5px 0; transition: color .2s; }
 .pv-footer a:hover { color: var(--pv-blue); }
@@ -599,3 +650,35 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible,
 
 /* Keep the leftmost card badge visible past the prev arrow */
 .pv-row-arrow { width: 54px; }
+
+/* =====================  MOBILE POLISH (audit round)  ===================== */
+@media (max-width: 720px){
+  /* tiny scrubber labels collide at phone widths — rely on the end labels */
+  .pv-scrubber-seg::after { display: none; }
+  /* align the first card's left edge to the page gutter */
+  .pv-row-scroll { padding-left: 0; padding-right: 0; }
+  /* inline-padded CTA/stat cards must respect the mobile gutter */
+  .pv-detail-hero { padding-left: 22px !important; padding-right: 22px !important; }
+  .pv-section > .pv-wrap > .pv-stat[style] { padding-left: 22px !important; padding-right: 22px !important; }
+}
+/* stack hero buttons full-width on phones so labels never clip */
+@media (max-width: 480px){
+  .pv-hero-actions { flex-direction: column; align-items: stretch; }
+  .pv-hero-actions .pv-btn { flex: none; width: 100%; }
+}
+/* solid nav background while the mobile menu is open */
+@media (max-width: 860px){
+  .pv-nav.nav-open { background: var(--pv-bg-2); }
+  /* modal close target ≥40px and clear of the title on narrow screens */
+  .pv-modal-close { width: 40px; height: 40px; }
+  .pv-modal-hero { padding-top: 46px; }
+}
+/* show the play-disc affordance on touch devices (no hover) */
+@media (hover: none){
+  .pv-card .pv-playhint { opacity: .9; }
+}
+/* tighten the nav bar so it never overflows very narrow phones */
+@media (max-width: 400px){
+  .pv-nav-inner { gap: 8px; }
+  .pv-nav-cta { padding: 8px 10px; font-size: 12px; }
+}
