@@ -212,7 +212,7 @@
     btn.className = "pv-nav-burger";
     btn.setAttribute("aria-label", "Menu");
     btn.setAttribute("aria-expanded", "false");
-    btn.innerHTML = '<span aria-hidden="true"></span>';
+    btn.innerHTML = '<span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>';
     inner.appendChild(btn);
     function setOpen(open) {
       nav.classList.toggle("nav-open", open);
